@@ -1,0 +1,99 @@
+﻿@using System.Text.Json
+@using System.Text.RegularExpressions;
+@model List<string>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container">
+
+    <h2>
+        Результаты запроса
+    </h2>
+    <div class="container">
+        
+        <h3>Результаты</h3>
+        <table class="table">
+            <tr>
+                @foreach (var Names in ((List<object>)ViewData["Rezult"])[0].GetType().GetProperties())
+                {
+
+                        <th>
+                            @Names.Name
+                        </th>
+                    
+                    
+                }
+
+            </tr>
+
+            @foreach (var item in (List<object>)ViewData["Rezult"])
+            {
+        <tr>
+            @foreach (var item2 in item.GetType().GetProperties())
+            {
+
+                if (item2.PropertyType == typeof(int) || item2.PropertyType == typeof(string) || item2.PropertyType == typeof(double))
+                {
+                    <td>
+                        @item.GetType().GetProperty(item2.Name).GetValue(item)
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        @item.GetType().GetProperty(item2.Name).GetValue(item).ToString()
+                    </td>
+                }
+
+            }
+
+        </tr>
+            }
+
+        </table>
+
+    </div>
+
+    @if (Model.Count > 0)
+    {
+        foreach (var ElementName in Model)
+        {
+            <h3>@ElementName</h3>
+            <table class="table">
+                <tr>
+                    @foreach (var Names in ((List<object>)ViewData[ElementName])[0].GetType().GetProperties())
+                    {
+                        if (Names.PropertyType == typeof(int) || Names.PropertyType == typeof(string) || Names.PropertyType == typeof(double))
+                        {
+                            <th>
+                                @Names.Name
+                            </th>
+                        }
+                    }
+
+                </tr>
+
+                @foreach (var item in (List<object>)ViewData[ElementName])
+                {
+                    <tr>
+                        @foreach (var item2 in item.GetType().GetProperties())
+                        {
+
+                            if (item2.PropertyType == typeof(int) || item2.PropertyType == typeof(string) || item2.PropertyType == typeof(double))
+                            {
+                                <td>
+                                    @item.GetType().GetProperty(item2.Name).GetValue(item)
+                                </td>
+                            }
+
+                        }
+
+                    </tr>
+                }
+
+            </table>
+        }
+
+    }
+</div>
