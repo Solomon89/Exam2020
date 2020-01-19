@@ -26,7 +26,7 @@ namespace Exam2020.Controllers
         {
             SetModel(NameOfTicket);
 
-            ViewData["Rezult"] = _dataContext.T1Garage.First(i => i.Name == "Гараж 2").Cars.Where(j => j.Color == Color.Green.ToString()).Select(i=>(object)i).ToList(); //"Сюда вписать запрос";
+            ViewData["Rezult"] = _dataContext.T1Garage.Select(i=>(object)i).ToList(); //"Сюда вписать запрос"; .Select(i=>(object)i).ToList()
             return View();
         }
         private void SetModel(string NameOfTicket)
