@@ -13,10 +13,68 @@ namespace Exam2020.Models
         public DbSet<T1Auto> T1Auto { get; set; }
         public DbSet<T1Garage> T1Garage { get; set; }
         public DbSet<T1CarModel> T1CarModels { get; set; }
+        public DbSet<T2Manufecturer> T2Manufecturers { get; set; }
+        public DbSet<T2Model> T2Models { get; set; }
+        public DbSet<T2Shop> T2Shops { get; set; }
+        public DbSet<T2ShopItems> T2ShopItems { get; set; }
         public ExamDataContext(DbContextOptions<ExamDataContext> options) : base(options)
         {
             Database.EnsureCreated();
             InitT1();
+            InitT2();
+        }
+
+        private void InitT2()
+        {
+            if (!T2Shops.Any())
+            {
+                T2Manufecturers.AddRange(
+                    new T2Manufecturer[]
+                    {
+                        new T2Manufecturer() {Name = "Canon" },
+                        new T2Manufecturer() {Name = "Nikon" },
+                        new T2Manufecturer() {Name = "Sony" }
+                    });
+                SaveChanges();
+                T2Models.AddRange(
+                    new T2Model[]
+                    {
+                        new T2Model() {Name = "D500",T2Manufecturer = T2Manufecturers.First(i=>i.Name == "Canon") },
+                        new T2Model() {Name = "D600",T2Manufecturer = T2Manufecturers.First(i=>i.Name == "Canon") },
+                        new T2Model() {Name = "D700",T2Manufecturer = T2Manufecturers.First(i=>i.Name == "Canon") },
+                        new T2Model() {Name = "T2",T2Manufecturer = T2Manufecturers.First(i=>i.Name == "Nikon") },
+                        new T2Model() {Name = "T1",T2Manufecturer = T2Manufecturers.First(i=>i.Name == "Nikon") },
+                        new T2Model() {Name = "T7",T2Manufecturer = T2Manufecturers.First(i=>i.Name == "Nikon") },
+                        new T2Model() {Name = "Alpha 2",T2Manufecturer = T2Manufecturers.First(i=>i.Name == "Sony") },
+                        new T2Model() {Name = "Alpha 3",T2Manufecturer = T2Manufecturers.First(i=>i.Name == "Sony") },
+                        new T2Model() {Name = "Alpha 4",T2Manufecturer = T2Manufecturers.First(i=>i.Name == "Sony") },
+                    }
+                    );
+                SaveChanges();
+                T2Shops.AddRange
+                    (
+                     new T2Shop[]
+                     {
+                         new T2Shop() {Name = "Citilink"},
+                         new T2Shop() {Name = "Eldorado"},
+
+                     }
+                    );
+                SaveChanges();
+                T2ShopItems.AddRange(
+                    new T2ShopItems[]
+                    {
+                        new T2ShopItems() {Numbers = 2, T2Shop  = T2Shops.First(i=>i.Name == "Citilink"), Coast=200000,T2Model = T2Models.First(i=>i.Name == "Alpha 4") },
+                        new T2ShopItems() {Numbers = 2, T2Shop  = T2Shops.First(i=>i.Name == "Citilink"), Coast=400000,T2Model = T2Models.First(i=>i.Name == "Alpha 3") },
+                        new T2ShopItems() {Numbers = 2, T2Shop  = T2Shops.First(i=>i.Name == "Citilink"), Coast=40000,T2Model = T2Models.First(i=>i.Name == "T1") },
+                        new T2ShopItems() {Numbers = 2, T2Shop  = T2Shops.First(i=>i.Name == "Citilink"), Coast=15000,T2Model = T2Models.First(i=>i.Name == "D600") },
+                        new T2ShopItems() {Numbers = 2, T2Shop  = T2Shops.First(i=>i.Name == "Eldorado"), Coast=21000,T2Model = T2Models.First(i=>i.Name == "Alpha 4") },
+                        new T2ShopItems() {Numbers = 2, T2Shop  = T2Shops.First(i=>i.Name == "Eldorado"), Coast=20000,T2Model = T2Models.First(i=>i.Name == "D700") },
+                        new T2ShopItems() {Numbers = 2, T2Shop  = T2Shops.First(i=>i.Name == "Eldorado"), Coast=12000,T2Model = T2Models.First(i=>i.Name == "D500") },
+                    }
+                    );
+                SaveChanges();
+            }
         }
 
         private void InitT1()
